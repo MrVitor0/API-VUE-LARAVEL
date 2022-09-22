@@ -29,7 +29,7 @@
                                     <td>{{ client.desname }}</td>
                                     <td>{{ client.desemail }}</td>
                                     <td>{{ client.desdocument }}</td>
-                                    <td>{{ client.dtbirth }}</td>
+                                    <td>{{ client.dtbirth_ }}</td>
                                     <td>{{ client.descep }}</td>
                                     <td>{{ client.descidade }}</td>
                                     <td>{{ client.desbairro }}</td>

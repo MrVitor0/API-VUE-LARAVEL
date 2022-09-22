@@ -1,31 +1,27 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card text-center" >
                     <div class="card-header">
-                        <h3 class="card-title">Listagem de Clientes</h3>
+                        <h3 class="card-title">Listagem de Produtos</h3>
                     </div>
-                    <div class="card-body">
-                        <table class="table table-striped table-hover">
+                    <div class="card-body table-responsive">
+                        <table class="table  table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Nome</th>
-                                    <th scope="col">E-mail</th>
-                                    <th scope="col">Telefone</th>
-                                    <th scope="col">Ações</th>
+                                    <th scope="col">Valor</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="client in clients" :key="client.id">
-                                    <th scope="row">@{{ client.id }}</th>
-                                    <td>@{{ client.name }}</td>
-                                    <td>@{{ client.email }}</td>
-                                    <td>@{{ client.phone }}</td>
+                                <tr v-for="product in products" :key="product.id">
+                                    <th scope="row">#{{ product.id }}</th>
+                                    <td>{{ product.desname }}</td>
+                                    <td>{{ product.desprice }}</td>
                                     <td>
-                                        <a class="btn btn-primary" :href="'/client/edit/' + client.id">Editar</a>
-                                        <a class="btn btn-danger" :href="'/client/delete/' + client.id">Excluir</a>
+                                        <a class="btn btn-danger" v-on:click='delete_product(product.id)'>Excluir</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -37,34 +33,71 @@
     </div>
 </template>
 <script>
+import Swal from 'sweetalert2'
 export default {
     data() {
         return {
-            title: 'Listagem de Clientes',
-            clients: []
+            title: 'Listagem de produtos',
+            products: []
         }
     },
     mounted() {
-        this.getClients();
+        this.getproducts();
     },
     methods: {
-        getClients() {
-            //return array of clients
-            this.clients = [
-                {
-                    id: 1,
-                    name: 'Vitor Hugo',
-                    email: 'vto.hugo67@gmail.com',
-                    phone: '(11) 9 9999-9999'
+        delete_product(id){
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: "Você não poderá reverter isso!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, excluir!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete('/api/product/delete/' + id)
+                    .then(response => {
+                        Swal.fire(
+                            'Excluído!',
+                            'O produto foi excluído com sucesso.',
+                            'success'
+                        )
+                        this.getproducts();
+                    })
+                    .catch(error => {
+                        Swal.fire(
+                            'Erro!',
+                            'Ocorreu um erro ao excluir este produto.',
+                            'error'
+                        )
+                    })
                 }
-            ]
-            // axios.get('/api/client')
-            //     .then(response => {
-            //         this.clients = response.data;
-            //     })
-            //     .catch(error => {
-            //         console.log(error);
-            //     });
+            })
+        },
+      
+        /**
+         * @author Vitor Hugo
+         * @version 1.0
+         * @description Método responsável por listar os productes
+        */
+        getproducts() {
+            Swal.fire({
+                title: 'Carregando..',
+                html: 'Aguarde enquanto recebemos as informações.',
+                didOpen: () => {
+                    Swal.showLoading()
+                        axios.get('/api/product/list')
+                        .then(response => {
+                            //stop loading
+                            Swal.close();
+                            this.products = response.data;
+                            console.log(response.data);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                }})
         }
     }
 }

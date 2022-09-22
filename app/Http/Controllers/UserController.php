@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\UserModel;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function delete(Request $request){
         $id = $request->id;
-        $user = User::find($id);
+        $user = UserModel::find($id);
         $user->delete();
         return response()->json([
             'message' => 'User deleted successfully'
@@ -30,15 +30,15 @@ class UserController extends Controller
     */
     public function list(Request $request){
         //list all users but format dt_birth to dd/mm/yyyy
-        $users = User::all();
+        $users = UserModel::all();
         foreach($users as $user){
             //format desdocument to 16430675750 to 164.306.757-50
             $user->desdocument = substr($user->desdocument, 0, 3) . '.' .
                                  substr($user->desdocument, 3, 3) . '.' .
                                  substr($user->desdocument, 6, 3) . '.' .
                                  substr($user->desdocument, 9, 2);
-
-            $user->dtbirth = date('d/m/Y', strtotime($user->dtbirth));
+      
+            $user->dtbirth_ = date('d/m/Y', strtotime($user->dtbirth));
         }
         return response()->json($users);
     }
@@ -90,14 +90,14 @@ class UserController extends Controller
             return response()->json(['error' => $th->getMessage()], 400);
         }
         //check if desemail and desdocument are unique in database, sometimes $validate doesn't work
-        $user = User::where('desemail', $request->desemail)->first();
+        $user = UserModel::where('desemail', $request->desemail)->first();
         if($user){
             return response()->json(['error' => 'Já existe alguém cadastrado com este e-mail'], 500);
         }
     
 
        //create a new user
-       $user = new User();
+       $user = new UserModel();
        $user->desname = $request->desname;
        $user->desnumero = $request->desnumero;
        $user->desdocument = $request->desdocument;
