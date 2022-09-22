@@ -11,5 +11,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', [App\Http\Controllers\HomeController::class, 'default'])->name('default');
+Route::get('/{any?}', [
+    function () {
+        return view('default');
+    }
+])->where('any', '.*');
