@@ -15,7 +15,10 @@
   <body>
       <div id="app">
           <main class="py-3">
-              <router-view />
+               <navbar></navbar>
+               <div class="page-content p-5" id="content">
+                  <router-view />
+               </div>
           </main>
       </div>
   </body>
