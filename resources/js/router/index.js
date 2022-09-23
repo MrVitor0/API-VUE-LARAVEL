@@ -16,7 +16,6 @@ const routes = [
     name: "home",
     component: home,
   },
-
   {
     path: "/client/list",
     name: "client_list",
@@ -27,7 +26,6 @@ const routes = [
     name: "client_register",
     component: client_register,
   },
-
   {
     path: "/product/list",
     name: "product_list",
@@ -38,7 +36,6 @@ const routes = [
     name: "product_register",
     component: product_register,
   },
-
   {
     path: "/sell/list",
     name: "sell_list",
@@ -51,11 +48,9 @@ const routes = [
   },
 ];
 
-
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
-
 
 export default router;

@@ -61,6 +61,13 @@ export default {
         this.getClients();
     },
     methods: {
+        /**
+         * @author Vitor Hugo
+         * @version 1.0
+         * @param {int} id
+         * @returns {void}
+         * @description Delete a client
+        */
         delete_client(id){
             Swal.fire({
                 title: 'Tem certeza?',
@@ -91,11 +98,11 @@ export default {
                 }
             })
         },
-      
         /**
          * @author Vitor Hugo
          * @version 1.0
-         * @description Método responsável por listar os clientes
+         * @returns {void}
+         * @description Get all clients
         */
         getClients() {
             Swal.fire({
@@ -108,10 +115,13 @@ export default {
                             //stop loading
                             Swal.close();
                             this.clients = response.data;
-                            console.log(response.data);
                         })
                         .catch(error => {
-                            console.log(error);
+                            Swal.fire(
+                                'Erro!',
+                                'Ocorreu um erro ao carregar os clientes.',
+                                'error'
+                            )
                         });
                 }})
         }

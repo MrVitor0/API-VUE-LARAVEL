@@ -7,21 +7,36 @@ use App\Models\ProductModel;
 
 class ProductController extends Controller
 {
-     /**
+    /**
      * @author Vitor Hugo
      * @version 1.0
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
-     */
+    */
     public function delete(Request $request){
         $id = $request->id;
-        $product = ProductModel::find($id);
-        $product->delete();
+        /**
+         * @param id
+         * @return ProductModel
+        */
+        try {
+            $product = ProductModel::find($id);
+        } catch (\Throwable $th) {
+            throw new \Exception("Produto de id {$id} não encontrado");
+        }
+        /**
+         * @var ProductModel $product
+         * @return {?} Exception
+        */
+        try {
+            $product->delete();
+        } catch (\Throwable $th) {
+            throw new \Exception("Erro ao deletar o produto de id {$id}");
+        }
         return response()->json([
             'message' => 'Product deleted successfully'
         ]);
     }
-
     /**
      * @author Vitor Hugo
      * @version 1.0
@@ -38,15 +53,22 @@ class ProductController extends Controller
              //list all users but format dt_birth to dd/mm/yyyy
              $products = ProductModel::all();
              foreach($products as $product){
-                //money will be in format 1,529.00 or 15,00, format to float and sum 1529.00 or 1500.00
-                $product->desprice = floatval(str_replace(',', '.', str_replace('.', '', $product->desprice)));
-                //now number format to brl
-                $product->desprice = number_format($product->desprice, 2, ',', '.');
+                /**
+                 * @param STRING desprice 
+                 * @return {?} Exception
+                */
+                try {
+                    //money will be in format 1,529.00 or 15,00, format to float and sum 1529.00 or 1500.00
+                    $product->desprice = floatval(str_replace(',', '.', str_replace('.', '', $product->desprice)));
+                    //now number format to brl
+                    $product->desprice = number_format($product->desprice, 2, ',', '.');
+                } catch (\Throwable $th) {
+                    throw new \Exception("Erro ao formatar o preço do produto de id {$product->id}");
+                }
              }
          }
         return response()->json($products);
     }
-
     /**
      * @author Vitor Hugo
      * @version 1.0
@@ -68,10 +90,18 @@ class ProductController extends Controller
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 400);
         }
-        //check if desname is unique in database, sometimes $validate doesn't work
-        $product = ProductModel::where('desname', $request->desname)->first();
-        if($product){
-            return response()->json(['error' => 'Já existe um produto cadastrado com este nome!'], 500);
+        /**
+         * @param STRING desprice
+         * @return {?} Exception
+        */
+        try {
+            //check if desname is unique in database, sometimes $validate doesn't work
+            $product = ProductModel::where('desname', $request->desname)->first();
+            if($product){
+                return response()->json(['error' => 'Já existe um produto cadastrado com este nome!'], 500);
+            }
+        } catch (\Throwable $th) {
+            throw new \Exception("Erro ao verificar se o produto de nome {$request->desname} já existe");
         }
        //create a new product
        $product = new ProductModel();
@@ -79,7 +109,7 @@ class ProductController extends Controller
        $product->desprice = $request->desprice;
        try {
          $product->save();
-       } catch (\Throwable $th) {
+       }catch (\Throwable $th) {
             return response()->json(['error' => 'Erro ao salvar este produto, verifique se preencheu todos os campos corretamente!'], 500);
        }
         return response()->json(['message' => $product], 201);

@@ -45,6 +45,13 @@ export default {
         this.getproducts();
     },
     methods: {
+        /**
+         * @author Vitor Hugo
+         * @version 1.0
+         * @param {int} id
+         * @returns {void}
+         * @description Delete a product
+        */
         delete_product(id){
             Swal.fire({
                 title: 'Tem certeza?',
@@ -74,12 +81,12 @@ export default {
                     })
                 }
             })
-        },
-      
+        },   
         /**
          * @author Vitor Hugo
          * @version 1.0
-         * @description Método responsável por listar os productes
+         * @returns {void}
+         * @description Get all products
         */
         getproducts() {
             Swal.fire({
@@ -91,11 +98,14 @@ export default {
                         .then(response => {
                             //stop loading
                             Swal.close();
-                            this.products = response.data;
-                            console.log(response.data);
+                            this.products = response.data;                          
                         })
                         .catch(error => {
-                            console.log(error);
+                            Swal.fire(
+                                'Erro!',
+                                'Ocorreu um erro ao carregar os produtos.',
+                                'error'
+                            )
                         });
                 }})
         }

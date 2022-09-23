@@ -10,13 +10,11 @@ class ProductModel extends Model
     use HasFactory;
 
     protected $table = 'products';
-
     //setup fields
     protected $fillable = [
         'desname',
         'desprice',
     ];
-  
     protected $casts = [
         'desname' => 'string',
         'desprice' => 'string',

@@ -10,7 +10,6 @@ class UserModel extends Model
     use HasFactory;
 
     protected $table = 'users';
-
     //setup fields
     protected $fillable = [
         'desname',
@@ -24,7 +23,6 @@ class UserModel extends Model
         'descomplemento',
         'deslogradouro',
     ];
-  
     protected $casts = [
         'desname' => 'string',
         'desnumero' => 'string',

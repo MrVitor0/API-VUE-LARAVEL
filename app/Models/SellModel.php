@@ -14,13 +14,11 @@ class SellModel extends Model
     public function user(){
         return $this->belongsTo('App\Models\UserModel', 'idclient');
     }
-    
-     //setup fields
-     protected $fillable = [
+    //setup fields
+    protected $fillable = [
         'idclient',
         'desproducts'
     ];
-  
     protected $casts = [
         'idclient' => 'string',
         'desproducts' => 'string'

@@ -43,6 +43,8 @@ export default {
         /**
          * @author Vitor Hugo
          * @version 1.0
+         * @returns {void}
+         * @description Format price, string to float
         */
         format_price(){
              this.desprice = parseFloat(this.desprice).toLocaleString('pt', {
@@ -57,9 +59,11 @@ export default {
         /**
          * @author Vitor Hugo
          * @version 1.0
-         */
+         * @returns {void}
+         * @description Submit form to register a product
+        */
         submit(){
-            //verifica se todos os campos estão preenchidos
+            //verify if the fields are empty
             if (this.desname == '' || this.desprice == '') {
                     Swal.fire({
                         icon: 'error',
@@ -67,7 +71,7 @@ export default {
                         text: 'Preencha todos os campos!',
                     })
                 } else {
-                    //envia os dados para o controller
+                    //send data to api
                     var that = this;
                     axios.post('/api/product/create', {
                             desname: this.desname,

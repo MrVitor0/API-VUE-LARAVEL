@@ -20,7 +20,7 @@
                                 <Multiselect
                                 mode="tags"
                                 v-model="form.products_id"
-                                placeholder="Select your character"
+                                placeholder="Selecione um ou mais produtos"
                                 label="name"
                                 :options="this.products"
                                 >
@@ -73,7 +73,9 @@ export default {
     methods: {
         /**
          * @author Vitor Hugo
-         * @description Get all customers
+         * @version 1.0
+         * @returns {void}
+         * @description Get list of products
         */
         getProducts() {
             axios.get('/api/product/list')
@@ -83,15 +85,20 @@ export default {
                          //push { value: element.id, name: element.desname, price: element.desprice }, to this.products
                           this.products.push({ value: element.id, name: element.desname, price: element.desprice });
                     });
-                   console.log(this.products)
                 })
                 .catch(error => {
-                    console.log(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Erro ao carregar produtos!',
+                    })
                 })
         },
         /**
          * @author Vitor Hugo
-         * @description Get all customers
+         * @version 1.0
+         * @returns {void}
+         * @description Get Clients list
         */
         getClients() {
             axios.get('/api/client/list', { params: ['id','desname'] } )
@@ -99,12 +106,18 @@ export default {
                     this.customers = response.data;
                 })
                 .catch(error => {
-                    console.log(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Erro ao carregar clientes!',
+                    })
                 })
         },
         /**
          * @author Vitor Hugo
          * @version 1.0
+         * @returns {void}
+         * @description Format price to BRL
         */
         format_price(){
              this.desprice = parseFloat(this.desprice).toLocaleString('pt', {
@@ -119,9 +132,11 @@ export default {
         /**
          * @author Vitor Hugo
          * @version 1.0
-         */
+         * @returns {void}
+         * @description Submit a form to create a new sell
+        */
         submit(){
-            //verifica se todos os campos estão preenchidos
+            //verify if form is valid
             if (this.form.customer_id == '' || this.form.products_id == []) {
                     Swal.fire({
                         icon: 'error',
@@ -129,7 +144,7 @@ export default {
                         text: 'Preencha todos os campos!',
                     })
                 } else {
-                    //envia os dados para o controller
+                    //send form to api
                     var that = this;
                     //convert this.form.products_id to json
                     axios.post('/api/sell/create', {

@@ -1,9 +1,7 @@
   /*
-*
 * ==========================================
 * CUSTOM UTIL CLASSES
 * ==========================================
-*
 */
 .vertical-nav {
     min-width: 17rem;
@@ -44,13 +42,6 @@
       width: calc(100% - 17rem);
     }
   }
-  /*
-  *
-  * ==========================================
-  * FOR DEMO PURPOSE
-  * ==========================================
-  *
-  */
   body {
     background: #ffcdbd;
     background: -webkit-linear-gradient(to right, rgb(217, 138, 89), #e5d69c);
@@ -68,15 +59,12 @@
   .text-gray {
     color: #aaa;
   }
-
   a{
     text-decoration: none;
   }
-
   li:hover{
     opacity: .8;
   }
- 
   .animate-charcter
   {
     text-transform: uppercase;
@@ -99,7 +87,6 @@
     display: inline-block;
       
   }
-
   @keyframes textclip {
     to {
       background-position: 200% center;

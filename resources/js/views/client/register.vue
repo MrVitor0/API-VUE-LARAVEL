@@ -89,9 +89,11 @@
     export default {
         methods: {
             /**
-             * @func CPFValidator
-             * @version 1.6
-             * @param {Event} event
+             * @author Vitor Hugo
+             * @version 1.0
+             * @param {string} cpf
+             * @returns {void}
+             * @description Check CPF
             */
             cpf_check(cpf){
                 var cpf = cpf.replace(/[^\d]+/g, '');
@@ -129,7 +131,9 @@
             /**
              * @author Vitor Hugo
              * @version 1.0
-             * @param {Event} event
+             * @param {event} event
+             * @returns {void}
+             * @description Validate CPF using cpf_check
             */
             validateCPF(event){
                 if(this.desdocument.length == 11){
@@ -162,16 +166,16 @@
             /**
              * @author Vitor Hugo
              * @version 1.0
-             * @param {Event} event
+             * @param {event} event
+             * @returns {void}
+             * @description Ajax to Via CEP to find CEP Data
             */
             find_cep(event){
                 if (event) event.preventDefault();
                 this.descep = this.descep.trim().replace(/[^0-9]/g, '');
-
                 var url_cep = 'https://viacep.com.br/ws/' + this.descep + '/json';
                 // clear all headers axios to viacep
                 axios.defaults.headers.common = null;
-
                 axios.get(url_cep).then(function (response) {
 
                     this.deslogradouro = response.data.logradouro;
@@ -179,17 +183,19 @@
                     this.desbairro = response.data.bairro;
                     this.descidade = response.data.localidade;
                 }.bind(this)).catch(function (error) {
-                    //dont debug
+                    //dont do anything 
                 });
                 document.getElementById('desnumero').focus();
             },
             /**
              * @author Vitor Hugo
              * @version 1.0
-             * @param {Event} event
-             */
+             * @param {form} this
+             * @returns {void}
+             * @description Send form to API
+            */
             submit() {            
-                //verifica se todos os campos estão preenchidos
+                //verify if form is valid
                 if (this.desname == '' || this.desemail == '' || this.desdocument == '' || this.dtbirth == '' || this.descep == '' || this.descidade == '' || this.desbairro == '' || this.deslogradouro == '' || this.descomplemento == '' || this.desnumero == '') {
                     Swal.fire({
                         icon: 'error',
@@ -197,7 +203,7 @@
                         text: 'Preencha todos os campos!',
                     })
                 } else {
-                    //envia os dados para o controller
+                    //send form to API
                     var that = this;
                     axios.post('/api/client/create', {
                             desname: this.desname,
@@ -250,5 +256,4 @@
             }
         }
     }
-
 </script>

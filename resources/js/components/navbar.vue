@@ -1,11 +1,11 @@
 <template>
-  <!-- Vertical navbar -->
+ <!-- Vertical navbar -->
  <div class="vertical-nav bg-white" id="sidebar">
      <div class="py-4 px-3 mb-4 bg-light">
        <div class="media d-flex align-items-center">
          <div class="media-body">
            <h4 class="m-1">Admin</h4>
-           <p class="font-weight-light text-muted m-1">WK Technology</p>
+           <p class="font-weight-light text-muted m-1">Teste Técnico</p>
          </div>
        </div>
      </div>
@@ -69,10 +69,5 @@
  import 'jquery/dist/jquery.min.js';
  import '../style/navbar.css';
 
- export default {
-  //usar o slot para importar conteudo
-   mounted(){
-
-   },
- }
+ export default {}
  </script>

@@ -4,7 +4,7 @@
                 <div class="col-md-12">
                     <div class="card text-center" >
                         <div class="card-header">
-                            <h3 class="card-title animate-charcter">Bem-vindo (a) ao teste técnico da <a :href="social.wk_website" target="_blank">WK Technology!</a></h3>
+                            <h3 class="card-title animate-charcter">Bem-vindo (a) ao teste técnico</h3>
                         </div>
                         <div class="card-body">
                             <p>Este sistema foi desenvolvido utilizando <a class="text-danger" :href="social.lr_website" target="_blank"><b>Laravel</b></a> e <a class="text-success" :href="social.vue_website" target="_blank"><b>Vue.JS</b></a>.</p>

@@ -12,49 +12,73 @@ class UserController extends Controller
      * @version 1.0
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
-     */
+    */
     public function delete(Request $request){
         $id = $request->id;
-        $user = UserModel::find($id);
-        $user->delete();
+        /**
+         * @param id
+         * @return UserModel or Exception {?}
+        */
+        try{
+            $user = UserModel::find($id);
+        } catch(\Throwable $th){
+            throw new \Exception("Usuário de id {$id} não encontrado");
+        }
+        /**
+         * @var UserModel $user
+         * @return {?} Exception
+        */
+        try {
+            $user->delete();
+        } catch (\Throwable $th) {
+            throw new \Exception("Erro ao deletar o usuário de id {$id}");
+        }
         return response()->json([
             'message' => 'User deleted successfully'
         ]);
     }
-
     /**
      * @author Vitor Hugo
      * @version 1.0
      * @param Request $request
+     * @expects {parameters} - OPTIONAL
      * @return \Illuminate\Http\JsonResponse
     */
     public function list(Request $request){
-        //check if $request->all() has key 0
+        //@method GET {MAIN}
+        /**
+         * @expects $request->all()[0], $_GET[0]
+         * @return \Illuminate\Http\JsonResponse
+         */
         if(array_key_exists(0, $request->all())){
            $values = [];
-           foreach($request->all() as $key => $value) array_push($values, $value);
-           $users = UserModel::get($values);
+           try {
+             foreach($request->all() as $key => $value) array_push($values, $value);
+             $users = UserModel::get($values);
+           } catch (\Throwable $th) {
+             throw new \Exception("Erro ao filtrar resultados do cliente", 1);
+           }
         }else{
-            //list all users but format dt_birth to dd/mm/yyyy
+            /**
+             * @expects $request->all()
+             * @return \Illuminate\Http\JsonResponse
+            */
             $users = UserModel::all();
             foreach($users as $user){
-                //format desdocument to 00030600050 to 000.306.000-50
-                $user->desdocument = substr($user->desdocument, 0, 3) . '.' .
-                                     substr($user->desdocument, 3, 3) . '.' .
-                                     substr($user->desdocument, 6, 3) . '.' .
-                                     substr($user->desdocument, 9, 2);
-                $user->dtbirth_ = date('d/m/Y', strtotime($user->dtbirth));
+                try {
+                    //format desdocument to 00030600050 to 000.306.000-50
+                    $user->desdocument = substr($user->desdocument, 0, 3) . '.' .
+                                         substr($user->desdocument, 3, 3) . '.' .
+                                         substr($user->desdocument, 6, 3) . '.' .
+                                         substr($user->desdocument, 9, 2);
+                    $user->dtbirth_ = date('d/m/Y', strtotime($user->dtbirth));
+                } catch (\Throwable $th) {
+                   throw new \Exception("Erro ao formatar dados do cliente", 1);
+                }
             }
         }
         return response()->json($users);
     }
-
-
-
-
-
-
-
     /**
      * @author Vitor Hugo
      * @version 1.0
@@ -62,7 +86,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse
     */
     public function create(Request $request){
-        //set name of errors from validate in portuguese
+        //@method POST {MAIN}
         $messages = [
             'desname.required' => 'O campo nome é obrigatório',
             'desnumero.required' => 'O campo número é obrigatório',
@@ -77,7 +101,6 @@ class UserController extends Controller
             'descomplemento.required' => 'O campo complemento é obrigatório',
             'deslogradouro.required' => 'O campo logradouro é obrigatório',
         ];
-      
         //validate if $request has all the required fields and send errors in json
         try {
             $this->validate($request, [
@@ -95,13 +118,19 @@ class UserController extends Controller
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 400);
         }
-        //check if desemail and desdocument are unique in database, sometimes $validate doesn't work
-        $user = UserModel::where('desemail', $request->desemail)->first();
-        if($user){
-            return response()->json(['error' => 'Já existe alguém cadastrado com este e-mail'], 500);
+        /**
+         * @expects $request->all()
+         * @return \Illuminate\Http\JsonResponse
+        */
+        try {
+           //check if desemail and desdocument are unique in database, sometimes $validate doesn't work
+           $user = UserModel::where('desemail', $request->desemail)->first();
+           if($user){
+                return response()->json(['error' => 'Já existe alguém cadastrado com este e-mail'], 500);
+           }
+        } catch (\Throwable $th) {
+            return response()->json(['error' => 'Erro ao verificar se o e-mail já está cadastrado'], 500);
         }
-    
-
        //create a new user
        $user = new UserModel();
        $user->desname = $request->desname;
@@ -119,8 +148,6 @@ class UserController extends Controller
        } catch (\Throwable $th) {
             return response()->json(['error' => 'Erro ao salvar usuário, verifique se preencheu todos os campos corretamente!'], 500);
        }
-
         return response()->json(['message' => $user], 201);
     }
-
 }

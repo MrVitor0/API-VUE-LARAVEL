@@ -53,6 +53,9 @@ export default {
         /**
          * @author Vitor Hugo
          * @version 1.0
+         * @param {int} id
+         * @returns {void}
+         * @description Delete a sell
         */
         delete_sell(id){
             Swal.fire({
@@ -87,6 +90,8 @@ export default {
         /**
          * @author Vitor Hugo
          * @version 1.0
+         * @returns {void}
+         * @description Get all sells
         */
         getSells() {
             Swal.fire({
@@ -99,12 +104,12 @@ export default {
                             var filteredData = [];
                             response.data.forEach(element => {
                                 element.desproducts = JSON.parse(element.desproducts);
-                                //percorre o array element.desproducts pra pegar o valor total da compra
+                                //iterate over desproducts
                                  var total = 0;
                                  var produtos = '';
                                  element.desproducts.forEach(product => {
                                         total += Number(product.desprice);
-                                        //adiciona o nome do produto a string produtos mas verifica se precisa ter uma , ou não
+                                        //add product name to produtos
                                         if(produtos == ''){
                                             produtos = product.desname;
                                         }else{
@@ -132,11 +137,14 @@ export default {
                             });
                             //stop loading
                             Swal.close();
-                            this.sells = filteredData;
-                         
+                            this.sells = filteredData;                       
                         })
                         .catch(error => {
-                            console.log(error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Ocorreu um erro ao carregar os pedidos!',
+                            })
                         });
                 }})
         }
