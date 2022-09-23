@@ -13,16 +13,19 @@
 > - [x] ViaCEP Integration
 > - [x] CPF Validator
 
+- Versions
+> Node >= 16  / Php >= 7.4 
+
 
 # How to setup?
-- Create .env for Laravel and setup key
+- Create .env for Laravel 
 ```shell
   cp .env.example .env
-  php artisan key:generate
 ```
-- Install composer dependencies
+- Install composer dependenciesand setup app key
 ```shell
  composer install
+ php artisan key:generate
 ```
 - Install npm dependencies and compile
 ```shell
