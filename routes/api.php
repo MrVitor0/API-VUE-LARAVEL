@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SellController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -34,3 +35,13 @@ Route::group(['prefix' => 'product'], function () {
     Route::delete('/delete/{id}', [ProductController::class, 'delete']);
 });
 
+
+/**
+ * @author : Vitor Hugo
+ * @date : 23-09-2022
+*/
+Route::group(['prefix' => 'sell'], function () {
+    Route::post('/create', [SellController::class, 'create']);
+    Route::get('/list', [SellController::class, 'list']);
+    Route::delete('/delete/{id}', [SellController::class, 'delete']);
+});

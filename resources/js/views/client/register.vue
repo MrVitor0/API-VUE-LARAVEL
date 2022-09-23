@@ -22,7 +22,7 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group text-left">
-                                        <label for="desdocument">CPF</label>
+                                        <label for="desdocument">CPF <a :href="web_geradorcpf" target="_blank">(Link Gerador de CPF)</a></label>
                                         <input type="text" class="form-control" v-on:change="validateCPF()" maxlength="11" id="desdocument" max v-model="desdocument"  placeholder="00000000-00">
                                     </div>
                                 </div>
@@ -143,7 +143,7 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'CPF Inválido',
-                            text: 'Por favor, digite um CPF válido e existente',
+                            text: 'Por favor, digite um CPF válido!',
                             timer: 1500
                         })
                         this.desdocument = ''
@@ -236,6 +236,7 @@
         },
         data() {
             return {
+                web_geradorcpf: 'https://www.geradordecpf.org/',
                 desname: '',
                 desemail: '',
                 desdocument: '',

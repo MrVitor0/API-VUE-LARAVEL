@@ -50,6 +50,11 @@
                 Listar
               </router-link>
           </li>
+          <li class="nav-item">
+              <router-link :to="{name: 'sell_register'}" class="nav-link text-dark font-italic bg-light">
+                  Cadastrar
+              </router-link>
+          </li>
       </ul>
 
    </div>

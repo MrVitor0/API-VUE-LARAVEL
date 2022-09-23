@@ -29,16 +29,22 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse
     */
     public function list(Request $request){
-        //list all users but format dt_birth to dd/mm/yyyy
-        $users = UserModel::all();
-        foreach($users as $user){
-            //format desdocument to 16430675750 to 164.306.757-50
-            $user->desdocument = substr($user->desdocument, 0, 3) . '.' .
-                                 substr($user->desdocument, 3, 3) . '.' .
-                                 substr($user->desdocument, 6, 3) . '.' .
-                                 substr($user->desdocument, 9, 2);
-      
-            $user->dtbirth_ = date('d/m/Y', strtotime($user->dtbirth));
+        //check if $request->all() has key 0
+        if(array_key_exists(0, $request->all())){
+           $values = [];
+           foreach($request->all() as $key => $value) array_push($values, $value);
+           $users = UserModel::get($values);
+        }else{
+            //list all users but format dt_birth to dd/mm/yyyy
+            $users = UserModel::all();
+            foreach($users as $user){
+                //format desdocument to 00030600050 to 000.306.000-50
+                $user->desdocument = substr($user->desdocument, 0, 3) . '.' .
+                                     substr($user->desdocument, 3, 3) . '.' .
+                                     substr($user->desdocument, 6, 3) . '.' .
+                                     substr($user->desdocument, 9, 2);
+                $user->dtbirth_ = date('d/m/Y', strtotime($user->dtbirth));
+            }
         }
         return response()->json($users);
     }

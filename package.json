@@ -29,6 +29,7 @@
         "vue-loader": "^16.8.3"
     },
     "dependencies": {
+        "@vueform/multiselect": "^2.5.3",
         "core-js": "^3.8.3",
         "jquery": "^3.6.1",
         "jquery-slim": "^3.0.0",

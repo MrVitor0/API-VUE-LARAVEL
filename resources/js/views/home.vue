@@ -27,6 +27,7 @@
                             <br>
                             <ul class="list-group list-group-center">
                                 <li class="list-group-item"><router-link :to="{name: 'sell_list'}">Listagem de Pedidos de Venda</router-link></li>
+                                <li class="list-group-item"><router-link :to="{name: 'sell_register'}">Cadastro de Pedidos de Venda</router-link></li>
                             </ul>
                         </div>
                     </div>

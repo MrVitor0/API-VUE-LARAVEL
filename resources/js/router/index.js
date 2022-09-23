@@ -8,6 +8,7 @@ import product_list from "../views/product/list.vue"
 import product_register from "../views/product/register.vue"
 
 import sell_list from "../views/sell/list.vue"
+import sell_register from "../views/sell/register.vue"
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
     path: "/sell/list",
     name: "sell_list",
     component: sell_list,
+  },
+  {
+    path: "/sell/register",
+    name: "sell_register",
+    component: sell_register,
   },
 ];
 

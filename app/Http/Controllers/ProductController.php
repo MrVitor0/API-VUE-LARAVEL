@@ -30,13 +30,20 @@ class ProductController extends Controller
     */
     public function list(Request $request){
         //list all products but format dt_birth to dd/mm/yyyy
-        $products = ProductModel::all();
-        foreach($products as $product){
-            //money will be in format 1,529.00 or 15,00, format to float and sum 1529.00 or 1500.00
-            $product->desprice = floatval(str_replace(',', '.', str_replace('.', '', $product->desprice)));
-            //now number format to brl
-            $product->desprice = number_format($product->desprice, 2, ',', '.');
-        }
+        if(array_key_exists(0, $request->all())){
+            $values = [];
+            foreach($request->all() as $key => $value) array_push($values, $value);
+            $products = ProductModel::get($values);
+         }else{
+             //list all users but format dt_birth to dd/mm/yyyy
+             $products = ProductModel::all();
+             foreach($products as $product){
+                //money will be in format 1,529.00 or 15,00, format to float and sum 1529.00 or 1500.00
+                $product->desprice = floatval(str_replace(',', '.', str_replace('.', '', $product->desprice)));
+                //now number format to brl
+                $product->desprice = number_format($product->desprice, 2, ',', '.');
+             }
+         }
         return response()->json($products);
     }
 
